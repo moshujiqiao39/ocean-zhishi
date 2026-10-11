@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>海识 · DeepSeek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Noto+Sans+SC:wght@400;700&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    :root {
+      --bio: #7dd3fc;
+      --glow: rgba(125, 211, 252, 0.35);
+      --kelp: #93c5fd;
+    }
+  </style>
+</head>
+<body>
+  <svg class="waves" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#10283a" d="M0,80 C240,140 480,20 720,70 C960,120 1200,30 1440,80 L1440,140 L0,140 Z"></path>
+    <path fill="#0b1c2c" opacity="0.7" d="M0,100 C200,40 500,130 820,80 C1100,40 1300,110 1440,70 L1440,140 L0,140 Z"></path>
+  </svg>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="mark">深</div>
+        <div>
+          <h1>海识</h1>
+          <p>方案二 · DeepSeek 外链</p>
+        </div>
+      </div>
+      <div class="badge">用户自备 API Key · 开发者可注入知识</div>
+      <div class="search">
+        <input id="libSearch" placeholder="检索将注入模型的知识…" />
+      </div>
+      <div id="chips" class="chips"></div>
+      <div id="library" class="library"></div>
+      <div class="sidebar-actions">
+        <button class="btn" id="openDev">开发者知识</button>
+        <button class="btn ghost" id="openSet">API 设置</button>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <div class="topbar">
+        <div class="sonar"><span class="ring"></span><span id="linkState">等待配置 DeepSeek</span></div>
+        <div class="muted">注入条目 <b id="kbCount">0</b> · <a href="../index.html" style="color:inherit">返回入口</a></div>
+      </div>
+      <div id="thread" class="thread">
+        <div id="empty" class="empty">
+          <h2>用你的 DeepSeek 问海</h2>
+          <p>先在“API 设置”填入自己的密钥。提问时会自动检索右侧知识库，把相关资料注入模型上下文。</p>
+          <div id="suggest" class="chips" style="justify-content:center;margin-top:16px">
+            <button class="chip" data-q="解释海洋酸化，并说明对贝类的影响">海洋酸化</button>
+            <button class="chip" data-q="比较渤海和南海的地理与生态差异">渤海和南海</button>
+            <button class="chip" data-q="如果要保护珊瑚礁，普通人可以做什么？">保护珊瑚礁</button>
+            <button class="chip" data-q="深海热液喷口的食物链是怎样的？">热液喷口</button>
+          </div>
+        </div>
+      </div>
+      <form id="askForm" class="composer">
+        <input id="askInput" autocomplete="off" placeholder="向 DeepSeek 提问，知识库会作为参考资料一起发送…" />
+        <button class="btn" id="askBtn" type="submit">提问</button>
+      </form>
+    </main>
+  </div>
+
+  <aside id="drawer" class="drawer">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h2>向模型输入知识</h2>
+      <button class="icon-btn" id="closeDev">关闭</button>
+    </div>
+    <p class="muted">这里写入的内容会在每次提问时按相关度注入 DeepSeek 的系统提示。导出 JSON 覆盖仓库文件并推送后，全站访客都能同步到新知识。</p>
+    <div class="field"><label>远程同步地址</label><input id="syncUrl" /></div>
+    <div class="row">
+      <button class="btn" id="syncNow">同步远程知识</button>
+      <button class="btn ghost" id="exportKb">导出 JSON</button>
+      <label class="btn ghost">导入 JSON<input id="importKb" type="file" accept="application/json" hidden /></label>
+      <button class="btn ghost" id="newEntry">新建空白</button>
+    </div>
+    <input id="fId" type="hidden" />
+    <div class="field"><label>标题</label><input id="fTitle" /></div>
+    <div class="row">
+      <div class="field" style="flex:1"><label>分类</label><input id="fCategory" /></div>
+      <div class="field" style="flex:1"><label>水层</label><input id="fDepth" /></div>
+    </div>
+    <div class="field"><label>标签</label><input id="fTags" /></div>
+    <div class="field"><label>摘要</label><textarea id="fSummary"></textarea></div>
+    <div class="field"><label>正文</label><textarea id="fContent" style="min-height:160px"></textarea></div>
+    <div class="field"><label>问答对（每行：问题 | 答案）</label><textarea id="fQa"></textarea></div>
+    <div class="row">
+      <button class="btn" id="saveEntry">写入知识库</button>
+      <button class="btn ghost" id="deleteEntry">删除本地增补</button>
+    </div>
+  </aside>
+
+  <aside id="settings" class="drawer">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h2>DeepSeek API</h2>
+      <button class="icon-btn" id="closeSet">关闭</button>
+    </div>
+    <p class="muted">密钥只存在你的浏览器，提问时发往下方代理，再转发到 DeepSeek。请使用你自己的密钥，可在 platform.deepseek.com 创建。</p>
+    <div class="field"><label>API Key</label><input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" /></div>
+    <div class="field">
+      <label>模型</label>
+      <select id="modelName">
+        <option value="deepseek-chat">deepseek-chat</option>
+        <option value="deepseek-reasoner">deepseek-reasoner</option>
+        <option value="deepseek-flash">deepseek-flash</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>API 代理地址（解决浏览器跨域）</label>
+      <input id="proxyUrl" placeholder="./api/chat 或 https://你的代理/api/chat" />
+    </div>
+    <p class="muted">GitHub Pages 无法直接请求 api.deepseek.com。仓库已附带 Vercel / Cloudflare 代理，部署后把地址填在这里。本机可用下方开发代理。</p>
+    <div class="row">
+      <button class="btn" id="saveSet">保存设置</button>
+      <button class="btn ghost" id="clearKey">清除密钥</button>
+    </div>
+  </aside>
+
+  <script src="./engine.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>海识 · 本地智库</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Noto+Sans+SC:wght@400;700&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <svg class="waves" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#12323d" d="M0,80 C240,140 480,20 720,70 C960,120 1200,30 1440,80 L1440,140 L0,140 Z"></path>
+    <path fill="#0b242c" opacity="0.7" d="M0,100 C200,40 500,130 820,80 C1100,40 1300,110 1440,70 L1440,140 L0,140 Z"></path>
+  </svg>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="mark">海</div>
+        <div>
+          <h1>海识</h1>
+          <p>方案一 · 本地知识模型</p>
+        </div>
+      </div>
+      <div class="badge">不连外部大模型 · 知识可同步更新</div>
+      <div class="search">
+        <input id="libSearch" placeholder="检索知识条目…" />
+      </div>
+      <div id="chips" class="chips"></div>
+      <div id="library" class="library"></div>
+      <div class="sidebar-actions">
+        <button class="btn" id="openDev">开发者知识</button>
+        <a class="btn ghost" href="../index.html">返回入口</a>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <div class="topbar">
+        <div class="sonar"><span class="ring"></span>本地声呐检索已就绪</div>
+        <div class="muted">条目 <b id="kbCount">0</b> · 更新 <span id="kbUpdated">—</span></div>
+      </div>
+      <div id="thread" class="thread">
+        <div id="empty" class="empty">
+          <h2>向本地海洋模型提问</h2>
+          <p>答案来自本站知识库和你增补的条目，电脑关机后只要打开网页仍可使用。</p>
+          <div id="suggest" class="chips" style="justify-content:center;margin-top:16px">
+            <button class="chip" data-q="海水为什么是咸的？">海水为什么是咸的？</button>
+            <button class="chip" data-q="珊瑚为什么会白化？">珊瑚为什么会白化？</button>
+            <button class="chip" data-q="马里亚纳海沟有多深？">马里亚纳海沟有多深？</button>
+            <button class="chip" data-q="中国有哪些边缘海？">中国有哪些边缘海？</button>
+            <button class="chip" data-q="什么是厄尔尼诺？">什么是厄尔尼诺？</button>
+          </div>
+        </div>
+      </div>
+      <form id="askForm" class="composer">
+        <input id="askInput" autocomplete="off" placeholder="例如：深海没有阳光，为什么还有生命？" />
+        <button class="btn" type="submit">提问</button>
+      </form>
+    </main>
+  </div>
+
+  <aside id="drawer" class="drawer">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h2>向模型输入知识</h2>
+      <button class="icon-btn" id="closeDev">关闭</button>
+    </div>
+    <p class="muted">新增条目会立刻进入本地检索模型。导出 JSON 后替换仓库里的 knowledge.json 并推送到 GitHub，所有访客刷新即可同步。</p>
+    <div class="field">
+      <label>远程同步地址</label>
+      <input id="syncUrl" />
+    </div>
+    <div class="row">
+      <button class="btn" id="syncNow">同步远程知识</button>
+      <button class="btn ghost" id="exportKb">导出 JSON</button>
+      <label class="btn ghost">导入 JSON<input id="importKb" type="file" accept="application/json" hidden /></label>
+      <button class="btn ghost" id="newEntry">新建空白</button>
+    </div>
+    <input id="fId" type="hidden" />
+    <div class="field"><label>标题</label><input id="fTitle" placeholder="例如：南海珊瑚礁" /></div>
+    <div class="row">
+      <div class="field" style="flex:1"><label>分类</label><input id="fCategory" placeholder="海洋生物" /></div>
+      <div class="field" style="flex:1"><label>水层</label><input id="fDepth" placeholder="浅海" /></div>
+    </div>
+    <div class="field"><label>标签</label><input id="fTags" placeholder="珊瑚，白化，保护" /></div>
+    <div class="field"><label>摘要</label><textarea id="fSummary"></textarea></div>
+    <div class="field"><label>正文</label><textarea id="fContent" style="min-height:160px"></textarea></div>
+    <div class="field"><label>问答对（每行：问题 | 答案）</label><textarea id="fQa" placeholder="珊瑚是动物吗 | 是，珊瑚虫是刺胞动物。"></textarea></div>
+    <div class="row">
+      <button class="btn" id="saveEntry">写入模型</button>
+      <button class="btn ghost" id="deleteEntry">删除本地增补</button>
+    </div>
+  </aside>
+
+  <script src="./engine.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>海识 · 海洋知识网站</title>
+  <style>
+    :root {
+      --foam: #e8f7f1;
+      --mist: #9db5ad;
+      --sand: #e6d3ae;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--foam);
+      background:
+        radial-gradient(900px 420px at 15% 0%, rgba(56, 168, 158, 0.28), transparent 55%),
+        radial-gradient(700px 360px at 90% 10%, rgba(224, 122, 95, 0.16), transparent 46%),
+        linear-gradient(180deg, #0c2733 0%, #061018 70%);
+    }
+    main { width: min(1080px, calc(100% - 40px)); margin: 0 auto; padding: 72px 0 80px; }
+    .kicker { color: var(--sand); letter-spacing: 0.16em; font-size: 12px; }
+    h1 {
+      font-family: "Palatino Linotype", "Songti SC", "STSong", "SimSun", serif;
+      font-size: clamp(42px, 7vw, 76px);
+      margin: 12px 0 8px;
+    }
+    .lead { max-width: 640px; color: var(--mist); line-height: 1.8; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 42px; }
+    a.card {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      padding: 28px;
+      border-radius: 24px;
+      background: rgba(10, 32, 44, 0.7);
+      border: 1px solid rgba(146, 212, 196, 0.18);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+      min-height: 280px;
+    }
+    a.card:hover { border-color: #5eead4; transform: translateY(-3px); transition: 0.2s ease; }
+    .tag { color: #5eead4; font-size: 13px; }
+    h2 { font-family: "Palatino Linotype", "Songti SC", "STSong", "SimSun", serif; font-size: 32px; margin: 10px 0; }
+    .card p { color: var(--mist); line-height: 1.75; }
+    footer { margin-top: 48px; color: var(--mist); font-size: 13px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="kicker">OCEAN KNOWLEDGE</div>
+    <h1>海识</h1>
+    <p class="lead">一个可以提问的海洋知识网站。两套方案互相独立：一套把知识装进本地检索模型，一套把同一批知识注入你自己的 DeepSeek。电脑关机后，公开网页链接仍然可以打开。</p>
+    <section class="grid">
+      <a class="card" href="./01-local-model/">
+        <div class="tag">方案一</div>
+        <h2>本地知识模型</h2>
+        <p>自建检索与回答模型，内置 40 余条可更新的海洋百科。开发者写入新知识后可立即提问，也能导出 JSON 同步给所有访客。</p>
+      </a>
+      <a class="card" href="./02-deepseek/">
+        <div class="tag">方案二</div>
+        <h2>DeepSeek 外链</h2>
+        <p>用户填写自己的 DeepSeek API Key 提问。开发者向知识库补充资料后，相关段落会自动注入模型上下文。</p>
+      </a>
+    </section>
+    <footer>仓库同时包含两套完整源码。公开访问地址见 README 与 LINKS.md。</footer>
+  </main>
+</body>
+</html>
