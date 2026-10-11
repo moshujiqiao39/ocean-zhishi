@@ -121,6 +121,22 @@
     </div>
   </aside>
 
+  <div id="gate" class="gate">
+    <form id="gateForm" class="gate-card">
+      <h2>开发者口令</h2>
+      <p class="muted">输入口令后才能向模型写入知识。</p>
+      <div class="field">
+        <label>口令</label>
+        <input id="gatePass" type="password" autocomplete="off" />
+      </div>
+      <p id="gateError" class="gate-error"></p>
+      <div class="row">
+        <button class="btn" type="submit">确认</button>
+        <button class="btn ghost" type="button" id="closeGate">取消</button>
+      </div>
+    </form>
+  </div>
+
   <script src="./engine.js"></script>
   <script src="./app.js"></script>
 </body>

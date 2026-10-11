@@ -273,6 +273,25 @@ button, .btn {
 }
 .drawer.open { transform: translateX(0); }
 .drawer h2 { font-family: var(--font-display); margin: 0 0 8px; }
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  display: none;
+  place-items: center;
+  background: rgba(4, 12, 16, 0.55);
+}
+.gate.open { display: grid; }
+.gate-card {
+  width: min(400px, calc(100vw - 36px));
+  padding: 22px;
+  border-radius: var(--radius);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.gate-card h2 { font-family: var(--font-display); margin: 0 0 8px; }
+.gate-error { color: var(--coral); font-size: 13px; min-height: 1.2em; }
 .field { margin: 12px 0; }
 .field label { display: block; margin-bottom: 6px; color: var(--mist); font-size: 13px; }
 .field textarea { min-height: 110px; resize: vertical; }

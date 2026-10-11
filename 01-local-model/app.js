@@ -1,5 +1,7 @@
 const STORAGE_KEY = "haishi-local-kb-v1";
 const SYNC_KEY = "haishi-local-sync-url";
+const DEV_PASS = "1145141919810";
+const DEV_UNLOCK_KEY = "haishi-dev-unlock";
 
 const state = {
   seed: [],
@@ -201,8 +203,29 @@ $("askForm").addEventListener("submit", (e) => {
 });
 
 $("libSearch").addEventListener("input", (e) => renderLibrary(e.target.value));
-$("openDev").addEventListener("click", () => $("drawer").classList.add("open"));
+function openDeveloper() {
+  if (sessionStorage.getItem(DEV_UNLOCK_KEY) === "1") {
+    $("drawer").classList.add("open");
+    return;
+  }
+  $("gateError").textContent = "";
+  $("gatePass").value = "";
+  $("gate").classList.add("open");
+  $("gatePass").focus();
+}
+$("openDev").addEventListener("click", openDeveloper);
 $("closeDev").addEventListener("click", () => $("drawer").classList.remove("open"));
+$("closeGate").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  if ($("gatePass").value === DEV_PASS) {
+    sessionStorage.setItem(DEV_UNLOCK_KEY, "1");
+    $("gate").classList.remove("open");
+    $("drawer").classList.add("open");
+    return;
+  }
+  $("gateError").textContent = "口令不正确";
+});
 $("saveEntry").addEventListener("click", () => {
   const entry = collectForm();
   if (!entry) return;
